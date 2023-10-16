@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Pages on Shadow Kylin</title>
+        <link>http://localhost:1313/page/</link>
+        <description>Recent content in Pages on Shadow Kylin</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Sun, 15 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/page/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>about</title>
+        <link>http://localhost:1313/about/</link>
+        <pubDate>Sun, 15 Oct 2023 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/about/</guid>
+        <description>&lt;center&gt;
+&lt;big&gt;秋风词&lt;/big&gt;
+&lt;sub&gt;李白&lt;/sub&gt;
+&lt;/center&gt;
+&lt;br&gt;
+&lt;center&gt;
+秋风清，秋月明，落叶聚还散，寒鸦栖复惊。
+&lt;p&gt;相亲相见知何日，此时此夜难为情；&lt;/p&gt;
+&lt;p&gt;入我相思门，知我相思苦，&lt;/p&gt;
+&lt;p&gt;长相思兮长相忆，短相思兮无穷极，&lt;/p&gt;
+&lt;p&gt;早知如此绊人心，何如当初莫相识。&lt;/p&gt;
+&lt;/center&gt;</description>
+        </item>
+        <item>
+        <title>Archives</title>
+        <link>http://localhost:1313/archives/</link>
+        <pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/archives/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Links</title>
+        <link>http://localhost:1313/links/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/links/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Search</title>
+        <link>http://localhost:1313/search/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/search/</guid>
+        <description></description>
+        </item>
+        
+    </channel>
+</rss>

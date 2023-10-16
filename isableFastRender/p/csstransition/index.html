@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='1 前言 CSS过渡(transition)可以在一个元素切换到另一种状态时为其定义平滑的过渡效果。
+例如，用户鼠标悬停在按钮上时，按钮颜色平滑的从一个颜色过渡到另一个颜色。
+1 2 3 4 .btn:hover{ background-color: red; color: black; } 默认悬停效果
+添加过渡效果
+1 2 3 4 .btn{ transition-duration: 0.8s; transition-timing-function: ease; } transition是transition-property、transition-duration、transition-timing-function、transition-delay的简写属性。
+下面来一一介绍这些属性。
+2 transition-property 这个属性指定应用过渡效果的属性名。
+它有以下取值：
+all：默认值，表示过渡效果应用到所有可过渡的属性上。 none：没有过渡动画。 &amp;lt;property-name&amp;gt;：指定应用过渡效果的属性名，你可以指定多个值，使用逗号分隔。 initial：重置为初始值。 unet：重置为默认值。 3 transition-duration 过渡周期，过渡效果的持续时间。
+默认值为0s，即没有过渡效果。
+属性值以秒或毫秒为单位，像transition-property一样，你也可以设置多个值，它们会自动对应transition-property指定的属性名。
+如果时间周期数小于过渡属性数，那么周期数会重复应用；如果时间周期数大于过渡属性数，那么时间周期数多余的部分被忽略。
+4 transition-timing-function 过渡效果的时间函数，决定了动画变化速度。
+下面是它的属性值介绍。
+1）ease
+默认值。
+过渡在开始时速度较慢，中间时加速，结束时减速。
+2）ease-in
+过渡开始时速度较慢，然后逐渐加速。
+3）ease-out
+开始时速度较快，然后逐渐减速。
+4）ease-in-out
+过渡开始和结束时速度较慢，中间时速度较快。相比于ease更加平滑。
+5）linear
+过渡速度恒定，没有加速或减速，呈线性变化。
+6）step-start
+在过渡的开始时立即跳到结束状态。
+7）step-end
+在过渡的结束时立即跳回开始状态。
+8）steps函数
+例如steps(4,jump-end)表示将过渡划分为4步，每一步结束时立即跳到结束状态。
+第二个参数有以下值：
+jump-start：在每一步开始时立即跳到结束状态。 jump-end：在每一步结束时立即跳到结束状态。 jump-none：没有跳跃，过渡效果平滑进行。 jump-both：在每一步的开始和结束时都立即跳到结束状态。 9）cubic-bezier函数'>
+<title>【CSS】transition</title>
+
+<link rel='canonical' href='http://localhost:1313/p/csstransition/'>
+
+<link rel="stylesheet" href="/scss/style.min.ae4884cde461212dfa0112922d28cf77708fd55bf4b1008e5798048826d2ebcf.css"><meta property='og:title' content='【CSS】transition'>
+<meta property='og:description' content='1 前言 CSS过渡(transition)可以在一个元素切换到另一种状态时为其定义平滑的过渡效果。
+例如，用户鼠标悬停在按钮上时，按钮颜色平滑的从一个颜色过渡到另一个颜色。
+1 2 3 4 .btn:hover{ background-color: red; color: black; } 默认悬停效果
+添加过渡效果
+1 2 3 4 .btn{ transition-duration: 0.8s; transition-timing-function: ease; } transition是transition-property、transition-duration、transition-timing-function、transition-delay的简写属性。
+下面来一一介绍这些属性。
+2 transition-property 这个属性指定应用过渡效果的属性名。
+它有以下取值：
+all：默认值，表示过渡效果应用到所有可过渡的属性上。 none：没有过渡动画。 &amp;lt;property-name&amp;gt;：指定应用过渡效果的属性名，你可以指定多个值，使用逗号分隔。 initial：重置为初始值。 unet：重置为默认值。 3 transition-duration 过渡周期，过渡效果的持续时间。
+默认值为0s，即没有过渡效果。
+属性值以秒或毫秒为单位，像transition-property一样，你也可以设置多个值，它们会自动对应transition-property指定的属性名。
+如果时间周期数小于过渡属性数，那么周期数会重复应用；如果时间周期数大于过渡属性数，那么时间周期数多余的部分被忽略。
+4 transition-timing-function 过渡效果的时间函数，决定了动画变化速度。
+下面是它的属性值介绍。
+1）ease
+默认值。
+过渡在开始时速度较慢，中间时加速，结束时减速。
+2）ease-in
+过渡开始时速度较慢，然后逐渐加速。
+3）ease-out
+开始时速度较快，然后逐渐减速。
+4）ease-in-out
+过渡开始和结束时速度较慢，中间时速度较快。相比于ease更加平滑。
+5）linear
+过渡速度恒定，没有加速或减速，呈线性变化。
+6）step-start
+在过渡的开始时立即跳到结束状态。
+7）step-end
+在过渡的结束时立即跳回开始状态。
+8）steps函数
+例如steps(4,jump-end)表示将过渡划分为4步，每一步结束时立即跳到结束状态。
+第二个参数有以下值：
+jump-start：在每一步开始时立即跳到结束状态。 jump-end：在每一步结束时立即跳到结束状态。 jump-none：没有跳跃，过渡效果平滑进行。 jump-both：在每一步的开始和结束时都立即跳到结束状态。 9）cubic-bezier函数'>
+<meta property='og:url' content='http://localhost:1313/p/csstransition/'>
+<meta property='og:site_name' content='Shadow Kylin'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='CSS' /><meta property='article:published_time' content='2023-09-01T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-09-01T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="【CSS】transition">
+<meta name="twitter:description" content="1 前言 CSS过渡(transition)可以在一个元素切换到另一种状态时为其定义平滑的过渡效果。
+例如，用户鼠标悬停在按钮上时，按钮颜色平滑的从一个颜色过渡到另一个颜色。
+1 2 3 4 .btn:hover{ background-color: red; color: black; } 默认悬停效果
+添加过渡效果
+1 2 3 4 .btn{ transition-duration: 0.8s; transition-timing-function: ease; } transition是transition-property、transition-duration、transition-timing-function、transition-delay的简写属性。
+下面来一一介绍这些属性。
+2 transition-property 这个属性指定应用过渡效果的属性名。
+它有以下取值：
+all：默认值，表示过渡效果应用到所有可过渡的属性上。 none：没有过渡动画。 &amp;lt;property-name&amp;gt;：指定应用过渡效果的属性名，你可以指定多个值，使用逗号分隔。 initial：重置为初始值。 unet：重置为默认值。 3 transition-duration 过渡周期，过渡效果的持续时间。
+默认值为0s，即没有过渡效果。
+属性值以秒或毫秒为单位，像transition-property一样，你也可以设置多个值，它们会自动对应transition-property指定的属性名。
+如果时间周期数小于过渡属性数，那么周期数会重复应用；如果时间周期数大于过渡属性数，那么时间周期数多余的部分被忽略。
+4 transition-timing-function 过渡效果的时间函数，决定了动画变化速度。
+下面是它的属性值介绍。
+1）ease
+默认值。
+过渡在开始时速度较慢，中间时加速，结束时减速。
+2）ease-in
+过渡开始时速度较慢，然后逐渐加速。
+3）ease-out
+开始时速度较快，然后逐渐减速。
+4）ease-in-out
+过渡开始和结束时速度较慢，中间时速度较快。相比于ease更加平滑。
+5）linear
+过渡速度恒定，没有加速或减速，呈线性变化。
+6）step-start
+在过渡的开始时立即跳到结束状态。
+7）step-end
+在过渡的结束时立即跳回开始状态。
+8）steps函数
+例如steps(4,jump-end)表示将过渡划分为4步，每一步结束时立即跳到结束状态。
+第二个参数有以下值：
+jump-start：在每一步开始时立即跳到结束状态。 jump-end：在每一步结束时立即跳到结束状态。 jump-none：没有跳跃，过渡效果平滑进行。 jump-both：在每一步的开始和结束时都立即跳到结束状态。 9）cubic-bezier函数">
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu55467a9a1163e46ddda66cf36bec70b3_21404_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">⭐</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Shadow Kylin</a></h1>
+            <h2 class="site-description">南风知我意，吹梦到西洲。</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Shadow-Kylin'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>about</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#1-前言">1 前言</a></li>
+    <li><a href="#2-transition-property">2 transition-property</a></li>
+    <li><a href="#3-transition-duration">3 transition-duration</a></li>
+    <li><a href="#4-transition-timing-function">4 transition-timing-function</a></li>
+    <li><a href="#5-transition-delay">5 transition-delay</a></li>
+    <li><a href="#6-移动小球demo">6 移动小球Demo</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/frontend/" style="background-color: #2a9d8f; color: #fff;">
+                Frontend
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/csstransition/">【CSS】transition</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Sep 01, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    1 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="1-前言">1 前言</h1>
+<p>CSS过渡(transition)可以在一个元素切换到另一种状态时为其定义平滑的过渡效果。</p>
+<p>例如，用户鼠标悬停在按钮上时，按钮颜色平滑的从一个颜色过渡到另一个颜色。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="p">.</span><span class="nc">btn</span><span class="p">:</span><span class="nd">hover</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">background-color</span><span class="p">:</span> <span class="kc">red</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">color</span><span class="p">:</span> <span class="kc">black</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>默认悬停效果</p>
+<p><img src="https://raw.githubusercontent.com/Shadow-Kylin/BlogImages/main/202310151540949.gif"
+	
+	
+	
+	loading="lazy"
+	
+		alt="动画"
+	
+	
+></p>
+<p>添加过渡效果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="p">.</span><span class="nc">btn</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">transition-duration</span><span class="p">:</span> <span class="mf">0.8</span><span class="kt">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">transition-timing-function</span><span class="p">:</span> <span class="kc">ease</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="https://raw.githubusercontent.com/Shadow-Kylin/BlogImages/main/202310151540206.gif"
+	
+	
+	
+	loading="lazy"
+	
+		alt="动画"
+	
+	
+></p>
+<p>transition是<strong>transition-property、transition-duration、transition-timing-function、transition-delay</strong>的简写属性。</p>
+<p>下面来一一介绍这些属性。</p>
+<h1 id="2-transition-property">2 transition-property</h1>
+<p>这个属性指定应用过渡效果的属性名。</p>
+<p>它有以下取值：</p>
+<ul>
+<li><code>all</code>：默认值，表示过渡效果应用到所有可过渡的属性上。</li>
+<li><code>none</code>：没有过渡动画。</li>
+<li><code>&lt;property-name&gt;</code>：指定应用过渡效果的属性名，你可以指定多个值，使用逗号分隔。</li>
+<li><code>initial</code>：重置为初始值。</li>
+<li><code>unet</code>：重置为默认值。</li>
+</ul>
+<h1 id="3-transition-duration">3 transition-duration</h1>
+<p>过渡周期，过渡效果的持续时间。</p>
+<p>默认值为0s，即没有过渡效果。</p>
+<p>属性值以秒或毫秒为单位，像transition-property一样，你也可以设置多个值，它们会自动对应transition-property指定的属性名。</p>
+<p>如果时间周期数小于过渡属性数，那么周期数会重复应用；如果时间周期数大于过渡属性数，那么时间周期数多余的部分被忽略。</p>
+<h1 id="4-transition-timing-function">4 transition-timing-function</h1>
+<p>过渡效果的时间函数，决定了动画变化速度。</p>
+<p><img src="https://raw.githubusercontent.com/Shadow-Kylin/BlogImages/main/202310151540839.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20230901204205527"
+	
+	
+></p>
+<p>下面是它的属性值介绍。</p>
+<p><strong>1）ease</strong></p>
+<p>默认值。</p>
+<p>过渡在开始时速度较慢，中间时加速，结束时减速。</p>
+<p><strong>2）ease-in</strong></p>
+<p>过渡开始时速度较慢，然后逐渐加速。</p>
+<p><strong>3）ease-out</strong></p>
+<p>开始时速度较快，然后逐渐减速。</p>
+<p><strong>4）ease-in-out</strong></p>
+<p>过渡开始和结束时速度较慢，中间时速度较快。相比于ease更加平滑。</p>
+<p><strong>5）linear</strong></p>
+<p>过渡速度恒定，没有加速或减速，呈线性变化。</p>
+<p><strong>6）step-start</strong></p>
+<p>在过渡的开始时立即跳到结束状态。</p>
+<p><strong>7）step-end</strong></p>
+<p>在过渡的结束时立即跳回开始状态。</p>
+<p><strong>8）steps函数</strong></p>
+<p>例如steps(4,jump-end)表示将过渡划分为4步，每一步结束时立即跳到结束状态。</p>
+<p>第二个参数有以下值：</p>
+<ul>
+<li><code>jump-start</code>：在每一步开始时立即跳到结束状态。</li>
+<li><code>jump-end</code>：在每一步结束时立即跳到结束状态。</li>
+<li><code>jump-none</code>：没有跳跃，过渡效果平滑进行。</li>
+<li><code>jump-both</code>：在每一步的开始和结束时都立即跳到结束状态。</li>
+</ul>
+<p><strong>9）cubic-bezier函数</strong></p>
+<p><img src="https://raw.githubusercontent.com/Shadow-Kylin/BlogImages/main/202310151541577.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20230901204417462"
+	
+	
+></p>
+<p>接受四个参数，分别定义了时间曲线上的两个控制点。</p>
+<p>这四个参数的取值范围是从0到1之间。</p>
+<p>这四个参数的组合决定了贝塞尔曲线的形状，从而影响了过渡效果的速度和变化。</p>
+<p>你可以使用<a class="link" href="https://cubic-bezier.com/#.17,.67,.83,.67"  target="_blank" rel="noopener"
+    >在线的贝塞尔曲线生成器</a>来可视化和调整这些参数。</p>
+<h1 id="5-transition-delay">5 transition-delay</h1>
+<p>过渡之前需要等待的时间。</p>
+<h1 id="6-移动小球demo">6 移动小球Demo</h1>
+<p><img src="https://raw.githubusercontent.com/Shadow-Kylin/BlogImages/main/202310151541213.gif"
+	
+	
+	
+	loading="lazy"
+	
+		alt="动画"
+	
+	
+></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;viewport&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;width=device-width, initial-scale=1.0&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>移动小球Demo<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">body</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">padding</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nc">ball</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">width</span><span class="p">:</span> <span class="mi">50</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">height</span><span class="p">:</span> <span class="mi">50</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">border-radius</span><span class="p">:</span> <span class="mi">50</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">background-color</span><span class="p">:</span> <span class="kc">red</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">transition</span><span class="p">:</span><span class="kc">all</span>  <span class="mi">7</span><span class="kt">s</span> <span class="kc">ease</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nc">move</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">transform</span><span class="p">:</span> <span class="nb">translateX</span><span class="p">(</span><span class="mi">300</span><span class="kt">px</span><span class="p">);</span> <span class="c">/* 将小球向右移动 */</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;animateButton&#34;</span><span class="p">&gt;</span>移动<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;ball&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">animateButton</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&#34;animateButton&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">ball</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&#34;.ball&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nx">animateButton</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&#34;click&#34;</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">ball</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">toggle</span><span class="p">(</span><span class="s2">&#34;move&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/css/">CSS</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/css%E6%B5%AE%E5%8A%A8%E5%B8%83%E5%B1%80/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【CSS】浮动布局</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/css%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD%E6%96%B9%E6%A1%88/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【CSS】水平垂直居中方案</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/cssbackground/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【CSS】background</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/gitdiscard-untracked-files/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【Git】Discard Untracked Files</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/vue-2props/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【Vue 2】Props</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2023 Shadow Kylin
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

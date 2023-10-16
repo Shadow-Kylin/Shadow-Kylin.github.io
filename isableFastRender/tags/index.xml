@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Tags on Shadow Kylin</title>
+        <link>http://localhost:1313/tags/</link>
+        <description>Recent content in Tags on Shadow Kylin</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Mon, 16 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Git</title>
+        <link>http://localhost:1313/tags/git/</link>
+        <pubDate>Mon, 16 Oct 2023 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/git/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Vue 2</title>
+        <link>http://localhost:1313/tags/vue-2/</link>
+        <pubDate>Sat, 14 Oct 2023 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/vue-2/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>JavaScript</title>
+        <link>http://localhost:1313/tags/javascript/</link>
+        <pubDate>Tue, 10 Oct 2023 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/javascript/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>CSS</title>
+        <link>http://localhost:1313/tags/css/</link>
+        <pubDate>Fri, 15 Sep 2023 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/css/</guid>
+        <description></description>
+        </item>
+        
+    </channel>
+</rss>

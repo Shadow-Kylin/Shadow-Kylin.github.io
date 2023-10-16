@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='1 组件名的命名规则 定义组件名的两种方式：
+短横线分隔命名，Kebab Case，例如my-component-name。 单词首字母大写命名，Pascal Case，例如MyComponentName。 第一种方式在模板中使用&amp;lt;my-component-name&amp;gt;引用该元素，第二种方式可以使用&amp;lt;my-component-name&amp;gt;或&amp;lt;MyComponentName&amp;gt;。
+2 全局注册和局部注册 在组件基础一文中我们提到Vue.component这种组件注册方式是全局注册的。
+全局注册意味着它们可以在其他Vue实例中直接使用。
+但有时对于某个全局注册的组件，我们并不是很频繁地使用，或者我们不再需要这个组件，但它仍会被包含在构建结果中。
+于是我们可以采用局部注册的方式。
+不采用模块系统的局部注册：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 &amp;lt;div id=&amp;#34;app&amp;#34;&amp;gt; &amp;lt;component-a&amp;gt;&amp;lt;/component-a&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;script&amp;gt; var ComponentA = { template: &amp;#39;&amp;lt;div&amp;gt;Component A&amp;lt;/div&amp;gt;&amp;#39; }; new Vue({ el: &amp;#39;#app&amp;#39;, components: { &amp;#39;component-a&amp;#39;: ComponentA }, }); &amp;lt;/script&amp;gt; 如果你通过 Babel 和 webpack 使用 ES2015 模块，可以像下面这样进行局部注册：
+1 2 3 4 5 6 7 import ComponentA from &amp;#39;.'>
+<title>【Vue 2】组件注册</title>
+
+<link rel='canonical' href='http://localhost:1313/p/vue-2%E7%BB%84%E4%BB%B6%E6%B3%A8%E5%86%8C/'>
+
+<link rel="stylesheet" href="/scss/style.min.ae4884cde461212dfa0112922d28cf77708fd55bf4b1008e5798048826d2ebcf.css"><meta property='og:title' content='【Vue 2】组件注册'>
+<meta property='og:description' content='1 组件名的命名规则 定义组件名的两种方式：
+短横线分隔命名，Kebab Case，例如my-component-name。 单词首字母大写命名，Pascal Case，例如MyComponentName。 第一种方式在模板中使用&amp;lt;my-component-name&amp;gt;引用该元素，第二种方式可以使用&amp;lt;my-component-name&amp;gt;或&amp;lt;MyComponentName&amp;gt;。
+2 全局注册和局部注册 在组件基础一文中我们提到Vue.component这种组件注册方式是全局注册的。
+全局注册意味着它们可以在其他Vue实例中直接使用。
+但有时对于某个全局注册的组件，我们并不是很频繁地使用，或者我们不再需要这个组件，但它仍会被包含在构建结果中。
+于是我们可以采用局部注册的方式。
+不采用模块系统的局部注册：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 &amp;lt;div id=&amp;#34;app&amp;#34;&amp;gt; &amp;lt;component-a&amp;gt;&amp;lt;/component-a&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;script&amp;gt; var ComponentA = { template: &amp;#39;&amp;lt;div&amp;gt;Component A&amp;lt;/div&amp;gt;&amp;#39; }; new Vue({ el: &amp;#39;#app&amp;#39;, components: { &amp;#39;component-a&amp;#39;: ComponentA }, }); &amp;lt;/script&amp;gt; 如果你通过 Babel 和 webpack 使用 ES2015 模块，可以像下面这样进行局部注册：
+1 2 3 4 5 6 7 import ComponentA from &amp;#39;.'>
+<meta property='og:url' content='http://localhost:1313/p/vue-2%E7%BB%84%E4%BB%B6%E6%B3%A8%E5%86%8C/'>
+<meta property='og:site_name' content='Shadow Kylin'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Vue 2' /><meta property='article:published_time' content='2023-08-24T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2023-08-24T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="【Vue 2】组件注册">
+<meta name="twitter:description" content="1 组件名的命名规则 定义组件名的两种方式：
+短横线分隔命名，Kebab Case，例如my-component-name。 单词首字母大写命名，Pascal Case，例如MyComponentName。 第一种方式在模板中使用&amp;lt;my-component-name&amp;gt;引用该元素，第二种方式可以使用&amp;lt;my-component-name&amp;gt;或&amp;lt;MyComponentName&amp;gt;。
+2 全局注册和局部注册 在组件基础一文中我们提到Vue.component这种组件注册方式是全局注册的。
+全局注册意味着它们可以在其他Vue实例中直接使用。
+但有时对于某个全局注册的组件，我们并不是很频繁地使用，或者我们不再需要这个组件，但它仍会被包含在构建结果中。
+于是我们可以采用局部注册的方式。
+不采用模块系统的局部注册：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 &amp;lt;div id=&amp;#34;app&amp;#34;&amp;gt; &amp;lt;component-a&amp;gt;&amp;lt;/component-a&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;script&amp;gt; var ComponentA = { template: &amp;#39;&amp;lt;div&amp;gt;Component A&amp;lt;/div&amp;gt;&amp;#39; }; new Vue({ el: &amp;#39;#app&amp;#39;, components: { &amp;#39;component-a&amp;#39;: ComponentA }, }); &amp;lt;/script&amp;gt; 如果你通过 Babel 和 webpack 使用 ES2015 模块，可以像下面这样进行局部注册：
+1 2 3 4 5 6 7 import ComponentA from &amp;#39;.">
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu55467a9a1163e46ddda66cf36bec70b3_21404_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">⭐</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Shadow Kylin</a></h1>
+            <h2 class="site-description">南风知我意，吹梦到西洲。</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Shadow-Kylin'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>about</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#1-组件名的命名规则">1 组件名的命名规则</a></li>
+    <li><a href="#2-全局注册和局部注册">2 全局注册和局部注册</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/frontend/" style="background-color: #2a9d8f; color: #fff;">
+                Frontend
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/vue-2%E7%BB%84%E4%BB%B6%E6%B3%A8%E5%86%8C/">【Vue 2】组件注册</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 24, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    2 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="1-组件名的命名规则">1 组件名的命名规则</h1>
+<p>定义组件名的两种方式：</p>
+<ol>
+<li>短横线分隔命名，Kebab Case，例如<code>my-component-name</code>。</li>
+<li>单词首字母大写命名，Pascal Case，例如<code>MyComponentName</code>。</li>
+</ol>
+<p>第一种方式在模板中使用<code>&lt;my-component-name&gt;</code>引用该元素，第二种方式可以使用<code>&lt;my-component-name&gt;</code>或<code>&lt;MyComponentName&gt;</code>。</p>
+<hr>
+<h1 id="2-全局注册和局部注册">2 全局注册和局部注册</h1>
+<p>在<a class="link" href="https://blog.csdn.net/2201_75288929/article/details/132277897"  target="_blank" rel="noopener"
+    >组件基础</a>一文中我们提到<code>Vue.component</code>这种组件注册方式是全局注册的。</p>
+<p><strong>全局注册</strong>意味着它们可以在其他Vue实例中直接使用。</p>
+<p>但有时对于某个全局注册的组件，我们并不是很频繁地使用，或者我们不再需要这个组件，但它仍会被包含在构建结果中。</p>
+<p>于是我们可以采用<strong>局部注册</strong>的方式。</p>
+<p><strong>不采用模块系统的局部注册</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">component-a</span><span class="p">&gt;&lt;/</span><span class="nt">component-a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">ComponentA</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">template</span><span class="o">:</span> <span class="s1">&#39;&lt;div&gt;Component A&lt;/div&gt;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">components</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;component-a&#39;</span><span class="o">:</span> <span class="nx">ComponentA</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果你通过 Babel 和 webpack 使用 ES2015 模块，可以像下面这样进行局部注册：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">ComponentA</span> <span class="nx">from</span> <span class="s1">&#39;./ComponentA&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">components</span><span class="o">:</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">ComponentA</span> <span class="c1">//ComponentA:ComponentA的缩写
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>当然，在模块化系统中，我们也可以进行全局注册，除了使用之前提到的Vue.component，还可以在使用了webpack或Vue CLI 3+的前提下，使用<code>require.context</code>进行全局注册：</p>
+<p>main.js</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">App</span> <span class="nx">from</span> <span class="s1">&#39;./App.vue&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">upperFirst</span> <span class="nx">from</span> <span class="s1">&#39;lodash/upperFirst&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">camelCase</span> <span class="nx">from</span> <span class="s1">&#39;lodash/camelCase&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">requireComponent</span><span class="o">=</span><span class="nx">require</span><span class="p">.</span><span class="nx">context</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s1">&#39;./components&#39;</span><span class="p">,</span><span class="c1">//基础组件相对路径
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kc">false</span><span class="p">,</span><span class="c1">//是否递归查询其子目录
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="sr">/Base[A-Z]\w+.(vue|js)$/</span> <span class="c1">//基础文件名的正则表达式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">requireComponent</span><span class="p">.</span><span class="nx">keys</span><span class="p">().</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">fileName</span><span class="p">=&gt;{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//获取组件配置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">compoentConfig</span><span class="o">=</span><span class="nx">requireComponent</span><span class="p">(</span><span class="nx">fileName</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//获取组件的PascalCase命名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">componentName</span><span class="o">=</span><span class="nx">upperFirst</span><span class="p">(</span><span class="c1">//大写首字母
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">camelCase</span><span class="p">(</span><span class="c1">//转换字符串string为驼峰写法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="c1">//获取与目录深度无关的文件名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nx">fileName</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="nx">pop</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\.\w+$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//全局注册组件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">Vue</span><span class="p">.</span><span class="nx">component</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">componentName</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 如果这个组件选项是通过 `export default` 导出的，
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 那么就会优先使用 `.default`，
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 否则回退到使用模块的根。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">componentConfig</span><span class="p">.</span><span class="k">default</span> <span class="o">||</span> <span class="nx">componentConfig</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//阻止Vue在启动时生成生产提示，如下：
+</span></span></span><span class="line"><span class="cl"><span class="c1">//You are running Vue in development mode.
+</span></span></span><span class="line"><span class="cl"><span class="c1">//Make sure to turn on production mode when deploying for production.
+</span></span></span><span class="line"><span class="cl"><span class="c1">//See more tips at https://vuejs.org/guide/deployment.html
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">Vue</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">productionTip</span><span class="o">=</span><span class="kc">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//从App提供的模板编译渲染函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">//h代指createElement方法，接收根组件App来创建VNode
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">render</span><span class="o">:</span><span class="nx">h</span><span class="p">=&gt;</span><span class="nx">h</span><span class="p">(</span><span class="nx">App</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}).</span><span class="nx">$mount</span><span class="p">(</span><span class="s1">&#39;#app&#39;</span><span class="p">)</span> <span class="c1">//手动挂载
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>Vue.component</code>用于全局注册单个组件，上面方法用于全局注册多个组件，所以会多次调用<code>Vue.component</code>方法。</p>
+<hr>
+<p><strong>额外话题</strong></p>
+<p>作者发现了<a class="link" href="https://ask.csdn.net/questions/7989152?weChatOA=weChatOA1"  target="_blank" rel="noopener"
+    >Vue.config.productionTip=false在某些位置不生效的情况</a>。</p>
+<p>实际上观察Vue检查devtools插件安装情况和开发模式的类型的源码部分可发现：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">inBrowser</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nb">window</span> <span class="o">!==</span> <span class="s2">&#34;undefined&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">....</span>
+</span></span><span class="line"><span class="cl"><span class="p">....</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// devtools global hook
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cm">/* istanbul ignore next */</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">inBrowser</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">devtools</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="nx">devtools</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">devtools</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;init&#39;</span><span class="p">,</span> <span class="nx">Vue</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">console</span><span class="p">[</span><span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="o">?</span> <span class="s1">&#39;info&#39;</span> <span class="o">:</span> <span class="s1">&#39;log&#39;</span><span class="p">](</span>
+</span></span><span class="line"><span class="cl">                    <span class="s1">&#39;Download the Vue Devtools extension for a better development experience:\n&#39;</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">                    <span class="s1">&#39;https://github.com/vuejs/vue-devtools&#39;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">productionTip</span> <span class="o">!==</span> <span class="kc">false</span> <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">typeof</span> <span class="nx">console</span> <span class="o">!==</span> <span class="s1">&#39;undefined&#39;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">console</span><span class="p">[</span><span class="nx">console</span><span class="p">.</span><span class="nx">info</span> <span class="o">?</span> <span class="s1">&#39;info&#39;</span> <span class="o">:</span> <span class="s1">&#39;log&#39;</span><span class="p">](</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;You are running Vue in development mode.\n&#34;</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;Make sure to turn on production mode when deploying for production.\n&#34;</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;See more tips at https://vuejs.org/guide/deployment.html&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>Vue.config.productionTip=false</code>应该在<code>inBrowser</code>为<code>true</code>时就已经被设置好，而<code>inBrowser</code>表示当前是否是浏览器环境，它通过检测<code>window</code>对象是否存在来判断，<code>window</code>对象在页面被渲染后定义。所以，<code>Vue.config.productionTip</code>设置时机是在页面渲染前。<code>body</code>中的<code>script</code>标签是在<code>body</code>解析完后才执行的。换言之，<code>Vue.config.productionTip</code>设置时机是在<code>body</code>解析前。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/vue-2/">Vue 2</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/vue-2props/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【Vue 2】Props</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/vue-2%E7%BB%84%E4%BB%B6%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【Vue 2】组件间的通信方式</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/vue-2%E8%BF%87%E6%B8%A1/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【Vue 2】过渡</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/vue-2%E6%9D%A1%E4%BB%B6%E6%B8%B2%E6%9F%93/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【Vue 2】条件渲染</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/vue-2nexttick%E6%96%B9%E6%B3%95%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【Vue 2】nextTick方法、异步更新、事件循环</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2023 Shadow Kylin
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
