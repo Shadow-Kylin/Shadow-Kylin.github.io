@@ -47,7 +47,7 @@ A git clean requires force.
 
 Additionally, using the command requires the developer to provide either the –force or –dry-run (-n) switch. It is important to note that –force and –dry-run switches both require two dashes.
 
-Failing to provide either switch will cause the Git clean command to fail, and the system will generate an error messag.
+Failing to provide either switch will cause the Git clean command to fail, and the system will generate an error message.
 
 # Remove untracked files with caution
 

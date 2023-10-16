@@ -14,30 +14,6 @@
         <guid>http://localhost:1313/tags/git/</guid>
         <description></description>
         </item>
-        <item>
-        <title>Vue 2</title>
-        <link>http://localhost:1313/tags/vue-2/</link>
-        <pubDate>Sat, 14 Oct 2023 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/tags/vue-2/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>JavaScript</title>
-        <link>http://localhost:1313/tags/javascript/</link>
-        <pubDate>Tue, 10 Oct 2023 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/tags/javascript/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>CSS</title>
-        <link>http://localhost:1313/tags/css/</link>
-        <pubDate>Fri, 15 Sep 2023 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/tags/css/</guid>
-        <description></description>
-        </item>
         
     </channel>
 </rss>
