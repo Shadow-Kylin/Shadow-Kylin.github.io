@@ -4,7 +4,6 @@ description:
 slug: 
 date: 2023-10-16
 image: 
-math: true
 categories:
     - Frontend
 tags:
