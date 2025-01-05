@@ -3,13 +3,13 @@ title: 函数、极限与连续
 description: 高等数学的函数、极限与连续的笔记
 slug: math
 date: 2024-02-03 00:00:00+0000
-image: cover.jpg
+image: 
 # categories:
 #     - Example Category
 tags:
     - math
 # weight: 1       # You can add weight to some posts to override the default sorting (date descending)
-draft: true
+draft: false
 hidden: false
 math: true
 ---
