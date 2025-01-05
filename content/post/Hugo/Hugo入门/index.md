@@ -1,7 +1,7 @@
 ---
 title: Hugo 入门
 description: Hugo 客户端环境的搭建、主题的使用
-slug: Hugo
+slug: 
 date: 2025-01-04 01:33:00+0800
 image: 
 categories:

@@ -1,6 +1,6 @@
 ---
-title: Frontend
-description: Aticles on the frontend.
+title: 前端
+description: JavaScript、CSS、HTML、TypeScript、Webpack、Vue.js、React
 image:
 
 # Badge style

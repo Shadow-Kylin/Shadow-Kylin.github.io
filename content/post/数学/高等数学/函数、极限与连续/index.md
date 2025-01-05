@@ -1,17 +1,21 @@
 ---
 title: 函数、极限与连续
 description: 高等数学的函数、极限与连续的笔记
-slug: math
 date: 2024-02-03 00:00:00+0000
 image: 
-# categories:
-#     - Example Category
+categories:
+    - Math
 tags:
-    - math
-# weight: 1       # You can add weight to some posts to override the default sorting (date descending)
+    - 高等数学
+    - 函数
+    - 极限
+    - 连续
 draft: false
 hidden: false
 math: true
+weight:
+slug:
+license: true
 ---
 # 函数、极限与连续
 
