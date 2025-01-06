@@ -1,7 +1,7 @@
 ---
 title: 函数、极限与连续
 description: 高等数学的函数、极限与连续的笔记
-date: 2024-02-03 00:00:00+0000
+date: 2024-02-03 00:00:00+0800
 image: 
 categories:
     - Math
