@@ -22,7 +22,7 @@ For more details, check out the [documentation](https://stack.jimmycai.com/writi
 
 ## YouTube video
 
-{{< youtube "0qwALOOvUik" >}}
+<!-- {{< youtube "0qwALOOvUik" >}} -->
 
 ## Generic video file
 
