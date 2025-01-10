@@ -46,9 +46,9 @@ JavaScript 由 Netscape 公司开发，最早在 1995 年发布，它诞生时�
 
 ECMAScript 由 ECMA 国际（ECMA International） 通过其 ECMA-262 标准定义。
 
-可以说，ECMAScript 的出现是为了规范化 JavaScript，使其成为一个可以跨平台和跨浏览器统一的脚本语言。
+ECMAScript 的出现是为了规范化 JavaScript，使其成为一个可以跨平台和跨浏览器统一的脚本语言。
 
-后来，JavaScript 经过不断发展，不仅实现了 ECMAScript 的规范，还包含了许多 Web 环境相关的特性，例如 DOM 操作和与浏览器的交互 API。JavaScript 已经可以用于开发 Web 应用、服务端程序（Node.js）、桌面应用和移动应用。
+后来，JavaScript 经过不断发展，不仅实现了 ECMAScript 的规范，还包含了许多 Web 环境相关的特性，例如 DOM 操作和与浏览器的交互 API，所以 JavaScript 和 ECMAScript 是相交关系，而不是包含关系。JavaScript 已经可以用于开发 Web 应用、服务端程序（Node.js）、桌面应用和移动应用。
 
 其它 ECMAScript 实现还包括 JScript（微软）和 ActionScript（Adobe）。
 
