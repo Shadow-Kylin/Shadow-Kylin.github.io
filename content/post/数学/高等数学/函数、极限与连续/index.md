@@ -7,9 +7,6 @@ categories:
     - Math
 tags:
     - 高等数学
-    - 函数
-    - 极限
-    - 连续
 draft: false
 hidden: false
 math: true
