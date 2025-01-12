@@ -156,6 +156,8 @@ self.addEventListener('notificationclick', event => {
 
 （3）client.postMessage(message)
 
+向特定客户端发送消息。
+
 ```javascript
 clients.matchAll().then(clientList => {
   clientList[0].postMessage({ message: 'Hello from Service Worker!' });
