@@ -180,6 +180,31 @@ self.registration.showNotification('标题', {
 });
 ```
 
+> self.registration 是 Service Worker 的注册对象。
+
+在主线程显示通知：
+
+```javascript
+if ("Notification" in window) {
+  console.log("浏览器支持 Notification");
+  Notification.requestPermission().then((permission) => {
+    if (permission === "granted") {
+      const options = {
+        body: "新消息通知",
+        icon: "icon.png",
+        tag: "unique-tag",
+      };
+      const notification = new Notification("您有新消息", options);
+
+      notification.onclick = () => {
+        console.log("用户点击了通知");
+        window.open("https://example.com");
+      };
+    }
+  });
+}
+```
+
 （2）通知事件
 
 用户点击通知时触发，通常用于跳转或执行操作。
@@ -417,25 +442,6 @@ self.addEventListener('fetch', event => {
         return caches.match('/offline.html'); // 返回离线页面
       });
     })
-  );
-});
-```
-
-### 动态缓存更新
-
-每次从网络获取资源时，更新缓存中的旧资源。
-
-```javascript
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    fetch(event.request)
-      .then(networkResponse => {
-        return caches.open('dynamic-cache').then(cache => {
-          cache.put(event.request, networkResponse.clone()); // 更新缓存
-          return networkResponse; // 返回网络响应
-        });
-      })
-      .catch(() => caches.match(event.request)) // 如果网络失败则使用缓存
   );
 });
 ```
