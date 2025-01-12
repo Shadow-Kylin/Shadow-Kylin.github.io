@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Git on DawnKylin</title><link>https://demo.stack.jimmycai.com/categories/git/</link><description>Recent content in Git on DawnKylin</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 06 Jan 2025 10:01:00 +0800</lastBuildDate><atom:link href="https://demo.stack.jimmycai.com/categories/git/index.xml" rel="self" type="application/rss+xml"/><item><title>配置 Git 代理</title><link>https://demo.stack.jimmycai.com/p/%E9%85%8D%E7%BD%AE-git-%E4%BB%A3%E7%90%86/</link><pubDate>Mon, 06 Jan 2025 10:01:00 +0800</pubDate><guid>https://demo.stack.jimmycai.com/p/%E9%85%8D%E7%BD%AE-git-%E4%BB%A3%E7%90%86/</guid><description>&lt;h1 id="设置代理">设置代理
+&lt;/h1>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">git config --global http.proxy http://your_proxy:port
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global https.proxy http://your_proxy:port
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h1 id="验证设置">验证设置
+&lt;/h1>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">git config --global --get http.proxy
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global --get https.proxy
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h1 id="取消代理">取消代理
+&lt;/h1>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">git config --global --unset http.proxy
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git config --global --unset https.proxy
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

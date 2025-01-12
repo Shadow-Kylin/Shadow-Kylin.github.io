@@ -1,0 +1,611 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="Service Worker 简介 Service Worker 是一种 Web 技术，是运行在用户浏览器背景中的 JavaScript 文件。它提供了拦截和处理网络请求（HTTPS 环境下）的能力，允许开发者缓存资源并创建离线体验，同时还能支持推送通知和后台数据同步等功能。\nService Worker 的重要特性 独立线程 Service Worker 在浏览器的单独线程中运行，与主线程分离，不直接访问 DOM，但可以通过 postMessage 与主线程通信。\n生命周期 安装（install）：当浏览器检测到新的 Service Worker 脚本时，进入安装阶段。 激活（activate）：新 Service Worker 安装完成后，清理旧缓存或其他不需要的资源。 运行（fetch 等事件）：处理网络请求或提供离线内容。 相关事件 （1）install 事件，在 Serive Worker 首次安装时触发，用于预缓存资源。\n1 2 3 4 5 6 7 self.addEventListener('install', event => { event.waitUntil( caches.open('my-cache').then(cache => { return cache.addAll(['/index.html', '/styles.css', '/script.js']); }) ); }); （2）activate 事件，在 Serive Worker 激活时触发，用于清理旧缓存。\n（3）fetch 事件，拦截网络请求时触发，用于返回缓存资源或动态请求。\n（4）push 事件，与 Push API 结合，实现实时通知。\n（5）sync 事件，用于后台同步操作（需要注册 Background Sync）。\n"><title>Service Worker API</title>
+<link rel=canonical href=https://demo.stack.jimmycai.com/p/service-worker-api/><link rel=stylesheet href=/scss/style.min.7347e7ea1528544a7b0df44feb6bbe2eebb22da4da5a0ca89cda2beac1b6fe4b.css><meta property='og:title' content="Service Worker API"><meta property='og:description' content="Service Worker 简介 Service Worker 是一种 Web 技术，是运行在用户浏览器背景中的 JavaScript 文件。它提供了拦截和处理网络请求（HTTPS 环境下）的能力，允许开发者缓存资源并创建离线体验，同时还能支持推送通知和后台数据同步等功能。\nService Worker 的重要特性 独立线程 Service Worker 在浏览器的单独线程中运行，与主线程分离，不直接访问 DOM，但可以通过 postMessage 与主线程通信。\n生命周期 安装（install）：当浏览器检测到新的 Service Worker 脚本时，进入安装阶段。 激活（activate）：新 Service Worker 安装完成后，清理旧缓存或其他不需要的资源。 运行（fetch 等事件）：处理网络请求或提供离线内容。 相关事件 （1）install 事件，在 Serive Worker 首次安装时触发，用于预缓存资源。\n1 2 3 4 5 6 7 self.addEventListener('install', event => { event.waitUntil( caches.open('my-cache').then(cache => { return cache.addAll(['/index.html', '/styles.css', '/script.js']); }) ); }); （2）activate 事件，在 Serive Worker 激活时触发，用于清理旧缓存。\n（3）fetch 事件，拦截网络请求时触发，用于返回缓存资源或动态请求。\n（4）push 事件，与 Push API 结合，实现实时通知。\n（5）sync 事件，用于后台同步操作（需要注册 Background Sync）。\n"><meta property='og:url' content='https://demo.stack.jimmycai.com/p/service-worker-api/'><meta property='og:site_name' content='DawnKylin'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='JavaScript'><meta property='article:tag' content='Web APIs'><meta property='article:published_time' content='2025-01-11T00:53:00+08:00'><meta property='article:modified_time' content='2025-01-11T00:53:00+08:00'><meta name=twitter:title content="Service Worker API"><meta name=twitter:description content="Service Worker 简介 Service Worker 是一种 Web 技术，是运行在用户浏览器背景中的 JavaScript 文件。它提供了拦截和处理网络请求（HTTPS 环境下）的能力，允许开发者缓存资源并创建离线体验，同时还能支持推送通知和后台数据同步等功能。\nService Worker 的重要特性 独立线程 Service Worker 在浏览器的单独线程中运行，与主线程分离，不直接访问 DOM，但可以通过 postMessage 与主线程通信。\n生命周期 安装（install）：当浏览器检测到新的 Service Worker 脚本时，进入安装阶段。 激活（activate）：新 Service Worker 安装完成后，清理旧缓存或其他不需要的资源。 运行（fetch 等事件）：处理网络请求或提供离线内容。 相关事件 （1）install 事件，在 Serive Worker 首次安装时触发，用于预缓存资源。\n1 2 3 4 5 6 7 self.addEventListener('install', event => { event.waitUntil( caches.open('my-cache').then(cache => { return cache.addAll(['/index.html', '/styles.css', '/script.js']); }) ); }); （2）activate 事件，在 Serive Worker 激活时触发，用于清理旧缓存。\n（3）fetch 事件，拦截网络请求时触发，用于返回缓存资源或动态请求。\n（4）push 事件，与 Push API 结合，实现实时通知。\n（5）sync 事件，用于后台同步操作（需要注册 Background Sync）。\n"><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu3473101363185682893.jpg width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/>DawnKylin</a></h1><h2 class=site-description>南风知我意，吹梦到西洲。</h2></div></header><ol class=menu-social><li><a href=https://github.com/dawnkylin target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span></a></li><li><a href=/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>About</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><li class=menu-bottom-section><ol class=menu><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#service-worker-简介>Service Worker 简介</a></li><li><a href=#service-worker-的重要特性>Service Worker 的重要特性</a><ol><li><a href=#独立线程>独立线程</a></li><li><a href=#生命周期>生命周期</a></li><li><a href=#相关事件>相关事件</a></li></ol></li><li><a href=#service-worker-主要-api>Service Worker 主要 API</a><ol><li><a href=#eventwaituntil>event.waitUntil</a></li><li><a href=#eventrespondwith>event.respondWith</a></li><li><a href=#cache-api>Cache API</a></li><li><a href=#fetch-api>Fetch API</a></li><li><a href=#clients-api>Clients API</a></li><li><a href=#notification-api>Notification API</a></li><li><a href=#sync-api>Sync API</a></li><li><a href=#service-worker-注册和控制-api>Service Worker 注册和控制 API</a></li><li><a href=#indexeddb-api>IndexedDB API</a></li></ol></li><li><a href=#使用-service-worker-的步骤>使用 Service Worker 的步骤</a><ol><li><a href=#创建-service-worker-文件>创建 Service Worker 文件</a></li><li><a href=#注册-service-worker>注册 Service Worker</a></li><li><a href=#确保-https-环境>确保 HTTPS 环境</a></li><li><a href=#缓存策略>缓存策略</a><ol><li><a href=#缓存优先策略>缓存优先策略</a></li><li><a href=#网络优先策略>网络优先策略</a></li><li><a href=#离线回退offline-fallback>离线回退（Offline Fallback）</a></li></ol></li><li><a href=#更新-service-worker>更新 Service Worker</a></li><li><a href=#调试与测试>调试与测试</a></li><li><a href=#结合-push-api-实现推送通知>结合 Push API 实现推送通知</a><ol><li><a href=#push-api-工作流程>Push API 工作流程</a></li><li><a href=#实现步骤>实现步骤</a></li></ol></li><li><a href=#后台同步>后台同步</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/categories/frontend/ style=background-color:#2a9d8f;color:#fff>前端</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/p/service-worker-api/>Service Worker API</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Jan 11, 2025</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>7 minute read</time></div></footer></div></header><section class=article-content><h1 id=service-worker-简介>Service Worker 简介</h1><p>Service Worker 是一种 Web 技术，是运行在用户浏览器背景中的 JavaScript 文件。它提供了拦截和处理网络请求（HTTPS 环境下）的能力，允许开发者缓存资源并创建离线体验，同时还能支持推送通知和后台数据同步等功能。</p><h1 id=service-worker-的重要特性>Service Worker 的重要特性</h1><h2 id=独立线程>独立线程</h2><p>Service Worker 在浏览器的单独线程中运行，与主线程分离，不直接访问 DOM，但可以通过 postMessage 与主线程通信。</p><h2 id=生命周期>生命周期</h2><ul><li>安装（install）：当浏览器检测到新的 Service Worker 脚本时，进入安装阶段。</li><li>激活（activate）：新 Service Worker 安装完成后，清理旧缓存或其他不需要的资源。</li><li>运行（fetch 等事件）：处理网络请求或提供离线内容。</li></ul><h2 id=相关事件>相关事件</h2><p>（1）install 事件，在 Serive Worker 首次安装时触发，用于预缓存资源。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>self</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;install&#39;</span><span class=p>,</span> <span class=nx>event</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>event</span><span class=p>.</span><span class=nx>waitUntil</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=nx>caches</span><span class=p>.</span><span class=nx>open</span><span class=p>(</span><span class=s1>&#39;my-cache&#39;</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span><span class=nx>cache</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>return</span> <span class=nx>cache</span><span class=p>.</span><span class=nx>addAll</span><span class=p>([</span><span class=s1>&#39;/index.html&#39;</span><span class=p>,</span> <span class=s1>&#39;/styles.css&#39;</span><span class=p>,</span> <span class=s1>&#39;/script.js&#39;</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>（2）activate 事件，在 Serive Worker 激活时触发，用于清理旧缓存。</p><p>（3）fetch 事件，拦截网络请求时触发，用于返回缓存资源或动态请求。</p><p>（4）push 事件，与 Push API 结合，实现实时通知。</p><p>（5）sync 事件，用于后台同步操作（需要注册 Background Sync）。</p><p>（6）notificationclick 事件，当用户点击通知时触发。</p><h1 id=service-worker-主要-api>Service Worker 主要 API</h1><h2 id=eventwaituntil>event.waitUntil</h2><p>event.waitUntil 是 Service Worker 中的一种关键方法，用于确保在事件的生命周期内，异步任务完成之前事件不会终止。</p><h2 id=eventrespondwith>event.respondWith</h2><p>event.respondWith 是 Service Worker 中专门用于拦截和处理网络请求的 API。它允许开发者接管浏览器对资源的默认请求和响应行为，并根据需要返回缓存、网络请求或其他自定义响应。（与缓存策略挂钩）</p><h2 id=cache-api>Cache API</h2><p>Cache API 提供了对缓存资源的读写操作，主要用于实现离线支持。</p><p>（1）<code>caches.open(cacheName)</code></p><p>打开或创建一个缓存对象。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>caches</span><span class=p>.</span><span class=nx>open</span><span class=p>(</span><span class=s1>&#39;my-cache&#39;</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span><span class=nx>cache</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>cache</span><span class=p>.</span><span class=nx>addAll</span><span class=p>([</span><span class=s1>&#39;/index.html&#39;</span><span class=p>,</span> <span class=s1>&#39;/styles.css&#39;</span><span class=p>,</span> <span class=s1>&#39;/script.js&#39;</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>（2）<code>caches.match(request)</code></p><p>查找是否存在与请求匹配的缓存。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>caches</span><span class=p>.</span><span class=nx>match</span><span class=p>(</span><span class=s1>&#39;/index.html&#39;</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span><span class=nx>response</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>(</span><span class=nx>response</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nx>response</span><span class=p>;</span> <span class=c1>// 返回缓存
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nx>fetch</span><span class=p>(</span><span class=s1>&#39;/index.html&#39;</span><span class=p>);</span> <span class=c1>// 请求网络
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>（3）<code>caches.keys()</code></p><p>获取所有缓存名称。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>caches</span><span class=p>.</span><span class=nx>keys</span><span class=p>().</span><span class=nx>then</span><span class=p>(</span><span class=nx>keys</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>keys</span><span class=p>);</span> <span class=c1>// 输出缓存名称数组
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>（4）<code>caches.delete(cacheName)</code></p><p>删除指定缓存。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>caches</span><span class=p>.</span><span class=k>delete</span><span class=p>(</span><span class=s1>&#39;old-cache&#39;</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span><span class=nx>success</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>(</span><span class=nx>success</span><span class=p>)</span> <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;缓存删除成功&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=fetch-api>Fetch API</h2><p>Fetch API 用于拦截网络请求并自定义响应。结合 Service Worker 的 fetch 事件使用。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>self</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;fetch&#39;</span><span class=p>,</span> <span class=nx>event</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>event</span><span class=p>.</span><span class=nx>respondWith</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=nx>caches</span><span class=p>.</span><span class=nx>match</span><span class=p>(</span><span class=nx>event</span><span class=p>.</span><span class=nx>request</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span><span class=nx>response</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>return</span> <span class=nx>response</span> <span class=o>||</span> <span class=nx>fetch</span><span class=p>(</span><span class=nx>event</span><span class=p>.</span><span class=nx>request</span><span class=p>);</span> <span class=c1>// 返回缓存或网络请求
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=clients-api>Clients API</h2><p>Clients API 用于与 Service Worker 的页面或其他上下文通信。</p><p>（1）<code>clients.matchAll()</code></p><p>获取与 Service Worker 关联的所有客户端（浏览器窗口或标签页）。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>clients</span><span class=p>.</span><span class=nx>matchAll</span><span class=p>().</span><span class=nx>then</span><span class=p>(</span><span class=nx>clientList</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>clientList</span><span class=p>.</span><span class=nx>forEach</span><span class=p>(</span><span class=nx>client</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;客户端 URL:&#39;</span><span class=p>,</span> <span class=nx>client</span><span class=p>.</span><span class=nx>url</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>（2）<code>clients.openWindow(url)</code></p><p>打开一个新窗口或标签页。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>self</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;notificationclick&#39;</span><span class=p>,</span> <span class=nx>event</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>event</span><span class=p>.</span><span class=nx>waitUntil</span><span class=p>(</span><span class=nx>clients</span><span class=p>.</span><span class=nx>openWindow</span><span class=p>(</span><span class=s1>&#39;/new-page&#39;</span><span class=p>));</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>（3）client.postMessage(message)</p><p>向特定客户端发送消息。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>clients</span><span class=p>.</span><span class=nx>matchAll</span><span class=p>().</span><span class=nx>then</span><span class=p>(</span><span class=nx>clientList</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>clientList</span><span class=p>[</span><span class=mi>0</span><span class=p>].</span><span class=nx>postMessage</span><span class=p>({</span> <span class=nx>message</span><span class=o>:</span> <span class=s1>&#39;Hello from Service Worker!&#39;</span> <span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=notification-api>Notification API</h2><p>Notification API 用于显示通知，与 push 事件结合使用。</p><p>（1）显示通知</p><p>在 Service Worker 中触发通知显示。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>self</span><span class=p>.</span><span class=nx>registration</span><span class=p>.</span><span class=nx>showNotification</span><span class=p>(</span><span class=s1>&#39;标题&#39;</span><span class=p>,</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>body</span><span class=o>:</span> <span class=s1>&#39;这是通知的正文&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>icon</span><span class=o>:</span> <span class=s1>&#39;/icon.png&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>badge</span><span class=o>:</span> <span class=s1>&#39;/badge.png&#39;</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>self.registration 是 Service Worker 的注册对象。</p></blockquote><p>在主线程显示通知：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=s2>&#34;Notification&#34;</span> <span class=k>in</span> <span class=nb>window</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;浏览器支持 Notification&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=nx>Notification</span><span class=p>.</span><span class=nx>requestPermission</span><span class=p>().</span><span class=nx>then</span><span class=p>((</span><span class=nx>permission</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>permission</span> <span class=o>===</span> <span class=s2>&#34;granted&#34;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=kr>const</span> <span class=nx>options</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>body</span><span class=o>:</span> <span class=s2>&#34;新消息通知&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>icon</span><span class=o>:</span> <span class=s2>&#34;icon.png&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>tag</span><span class=o>:</span> <span class=s2>&#34;unique-tag&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=p>};</span>
+</span></span><span class=line><span class=cl>      <span class=kr>const</span> <span class=nx>notification</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Notification</span><span class=p>(</span><span class=s2>&#34;您有新消息&#34;</span><span class=p>,</span> <span class=nx>options</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>      <span class=nx>notification</span><span class=p>.</span><span class=nx>onclick</span> <span class=o>=</span> <span class=p>()</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;用户点击了通知&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=nb>window</span><span class=p>.</span><span class=nx>open</span><span class=p>(</span><span class=s2>&#34;https://example.com&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>      <span class=p>};</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>（2）通知事件</p><p>用户点击通知时触发，通常用于跳转或执行操作。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>self</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;notificationclick&#39;</span><span class=p>,</span> <span class=nx>event</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>event</span><span class=p>.</span><span class=nx>notification</span><span class=p>.</span><span class=nx>close</span><span class=p>();</span> <span class=c1>// 关闭通知
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nx>event</span><span class=p>.</span><span class=nx>waitUntil</span><span class=p>(</span><span class=nx>clients</span><span class=p>.</span><span class=nx>openWindow</span><span class=p>(</span><span class=s1>&#39;/target-page&#39;</span><span class=p>));</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=sync-api>Sync API</h2><p>Sync API 用于在网络恢复时执行后台任务，例如发送离线数据。</p><p>（1）注册后台同步任务</p><p>需要在主线程注册任务。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>navigator</span><span class=p>.</span><span class=nx>serviceWorker</span><span class=p>.</span><span class=nx>ready</span><span class=p>.</span><span class=nx>then</span><span class=p>(</span><span class=nx>sw</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>sw</span><span class=p>.</span><span class=nx>sync</span><span class=p>.</span><span class=nx>register</span><span class=p>(</span><span class=s1>&#39;sync-tag&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>（2）处理同步事件——监听 sync 事件</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>self</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;sync&#39;</span><span class=p>,</span> <span class=nx>event</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>(</span><span class=nx>event</span><span class=p>.</span><span class=nx>tag</span> <span class=o>===</span> <span class=s1>&#39;sync-tag&#39;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>event</span><span class=p>.</span><span class=nx>waitUntil</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>      <span class=c1>// 执行后台任务
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nx>fetch</span><span class=p>(</span><span class=s1>&#39;/sync-endpoint&#39;</span><span class=p>,</span> <span class=p>{</span> <span class=nx>method</span><span class=o>:</span> <span class=s1>&#39;POST&#39;</span><span class=p>,</span> <span class=nx>body</span><span class=o>:</span> <span class=nx>JSON</span><span class=p>.</span><span class=nx>stringify</span><span class=p>({</span> <span class=nx>key</span><span class=o>:</span> <span class=s1>&#39;value&#39;</span> <span class=p>})</span> <span class=p>})</span>
+</span></span><span class=line><span class=cl>    <span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=service-worker-注册和控制-api>Service Worker 注册和控制 API</h2><p>这些 API 在主线程中使用，用于注册和管理 Service Worker。</p><p>（1）<code>navigator.serviceWorker.register(scriptURL)</code>：注册 Service Worker 脚本。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>navigator</span><span class=p>.</span><span class=nx>serviceWorker</span><span class=p>.</span><span class=nx>register</span><span class=p>(</span><span class=s1>&#39;/service-worker.js&#39;</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span><span class=nx>registration</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;Service Worker 注册成功:&#39;</span><span class=p>,</span> <span class=nx>registration</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>（2）<code>navigator.serviceWorker.ready</code>：返回一个 Promise，解析为 Service Worker 的控制对象。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>navigator</span><span class=p>.</span><span class=nx>serviceWorker</span><span class=p>.</span><span class=nx>ready</span><span class=p>.</span><span class=nx>then</span><span class=p>(</span><span class=nx>sw</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;Service Worker 已就绪&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>（3）<code>navigator.serviceWorker.controller</code>：获取当前页面的控制 Service Worker。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=nx>navigator</span><span class=p>.</span><span class=nx>serviceWorker</span><span class=p>.</span><span class=nx>controller</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;当前页面由 Service Worker 控制&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=indexeddb-api>IndexedDB API</h2><p>虽然不是 Service Worker 专属，但常与其结合用于存储离线数据。</p><p>（1）创建和使用数据库</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=kr>const</span> <span class=nx>request</span> <span class=o>=</span> <span class=nx>indexedDB</span><span class=p>.</span><span class=nx>open</span><span class=p>(</span><span class=s1>&#39;my-database&#39;</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=nx>request</span><span class=p>.</span><span class=nx>onsuccess</span> <span class=o>=</span> <span class=nx>event</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kr>const</span> <span class=nx>db</span> <span class=o>=</span> <span class=nx>event</span><span class=p>.</span><span class=nx>target</span><span class=p>.</span><span class=nx>result</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;数据库连接成功:&#39;</span><span class=p>,</span> <span class=nx>db</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><p>（2）</p><h1 id=使用-service-worker-的步骤>使用 Service Worker 的步骤</h1><h2 id=创建-service-worker-文件>创建 Service Worker 文件</h2><p>创建一个名为 service-worker.js 的文件，这是 Service Worker 的主脚本。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// 缓存版本
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>CACHE_NAME</span> <span class=o>=</span> <span class=s1>&#39;v1&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 要缓存的资源，路径相对于当前目录
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>CACHE_ASSETS</span> <span class=o>=</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=s1>&#39;/&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s1>&#39;/index.html&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s1>&#39;/styles.css&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s1>&#39;/app.js&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s1>&#39;/logo.png&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>];</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 安装事件：缓存静态资源
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>self</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s2>&#34;install&#34;</span><span class=p>,</span> <span class=p>(</span><span class=nx>event</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;Service Worker: Installing...&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=nx>self</span><span class=p>.</span><span class=nx>skipWaiting</span><span class=p>();</span> <span class=c1>// 跳过等待，直接进入激活状态
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nx>event</span><span class=p>.</span><span class=nx>waitUntil</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=nx>caches</span><span class=p>.</span><span class=nx>open</span><span class=p>(</span><span class=nx>CACHE_NAME</span><span class=p>).</span><span class=nx>then</span><span class=p>((</span><span class=nx>cache</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;Service Worker: Caching Files&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>      <span class=k>return</span> <span class=nx>cache</span><span class=p>.</span><span class=nx>addAll</span><span class=p>(</span><span class=nx>CACHE_ASSETS</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 激活事件：清理旧的缓存
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>self</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s2>&#34;activate&#34;</span><span class=p>,</span> <span class=p>(</span><span class=nx>event</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;Service Worker: Activating...&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=nx>event</span><span class=p>.</span><span class=nx>waitUntil</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=nx>caches</span><span class=p>.</span><span class=nx>keys</span><span class=p>().</span><span class=nx>then</span><span class=p>((</span><span class=nx>cacheNames</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>return</span> <span class=nb>Promise</span><span class=p>.</span><span class=nx>all</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>        <span class=nx>cacheNames</span><span class=p>.</span><span class=nx>map</span><span class=p>((</span><span class=nx>cacheName</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=k>if</span> <span class=p>(</span><span class=nx>cacheName</span> <span class=o>!==</span> <span class=nx>CACHE_NAME</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;Service Worker: Clearing Old Cache&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=nx>caches</span><span class=p>.</span><span class=k>delete</span><span class=p>(</span><span class=nx>cache</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>})</span>
+</span></span><span class=line><span class=cl>      <span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=nx>self</span><span class=p>.</span><span class=nx>clients</span><span class=p>.</span><span class=nx>claim</span><span class=p>();</span> <span class=c1>// 立即接管页面控制权
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>});</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 拦截请求并返回缓存资源
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>self</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;fetch&#39;</span><span class=p>,</span> <span class=nx>event</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;Service Worker: Fetching&#39;</span><span class=p>,</span> <span class=nx>event</span><span class=p>.</span><span class=nx>request</span><span class=p>.</span><span class=nx>url</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nx>event</span><span class=p>.</span><span class=nx>respondWith</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>        <span class=nx>caches</span><span class=p>.</span><span class=nx>match</span><span class=p>(</span><span class=nx>event</span><span class=p>.</span><span class=nx>request</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span><span class=nx>response</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=c1>// 如果资源在缓存中，则返回缓存，否则发起网络请求
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=k>return</span> <span class=nx>response</span> <span class=o>||</span> <span class=nx>fetch</span><span class=p>(</span><span class=nx>event</span><span class=p>.</span><span class=nx>request</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=p>})</span>
+</span></span><span class=line><span class=cl>    <span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>文件结构</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>/project
+</span></span><span class=line><span class=cl>  ├── index.html
+</span></span><span class=line><span class=cl>  ├── styles.css
+</span></span><span class=line><span class=cl>  ├── app.js
+</span></span><span class=line><span class=cl>  ├── logo.png
+</span></span><span class=line><span class=cl>  └── service-worker.js
+</span></span></code></pre></td></tr></table></div></div><h2 id=注册-service-worker>注册 Service Worker</h2><p>在你的主 JavaScript 文件中（如 main.js），注册 Service Worker。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=s1>&#39;serviceWorker&#39;</span> <span class=k>in</span> <span class=nx>navigator</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>window</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;load&#39;</span><span class=p>,</span> <span class=p>()</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>navigator</span><span class=p>.</span><span class=nx>serviceWorker</span>
+</span></span><span class=line><span class=cl>            <span class=p>.</span><span class=nx>register</span><span class=p>(</span><span class=s1>&#39;/service-worker.js&#39;</span><span class=p>)</span> <span class=c1>// 路径相对于根目录
+</span></span></span><span class=line><span class=cl><span class=c1></span>            <span class=p>.</span><span class=nx>then</span><span class=p>(</span><span class=nx>registration</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;Service Worker registered with scope:&#39;</span><span class=p>,</span> <span class=nx>registration</span><span class=p>.</span><span class=nx>scope</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=p>})</span>
+</span></span><span class=line><span class=cl>            <span class=p>.</span><span class=k>catch</span><span class=p>(</span><span class=nx>err</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=nx>console</span><span class=p>.</span><span class=nx>error</span><span class=p>(</span><span class=s1>&#39;Service Worker registration failed:&#39;</span><span class=p>,</span> <span class=nx>err</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=p>});</span>
+</span></span><span class=line><span class=cl>    <span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=确保-https-环境>确保 HTTPS 环境</h2><p>Service Worker 只能在安全上下文（HTTPS 或 localhost）中工作。如果使用本地开发环境，可以用 http-server 或 lite-server 等工具运行本地服务器。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>npx http-server
+</span></span></code></pre></td></tr></table></div></div><h2 id=缓存策略>缓存策略</h2><p>根据你的应用需求，可以选择不同的缓存策略。</p><h3 id=缓存优先策略>缓存优先策略</h3><p>如果优先使用缓存，可以修改 fetch 事件：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>self</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;fetch&#39;</span><span class=p>,</span> <span class=nx>event</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>event</span><span class=p>.</span><span class=nx>respondWith</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>        <span class=nx>caches</span><span class=p>.</span><span class=nx>match</span><span class=p>(</span><span class=nx>event</span><span class=p>.</span><span class=nx>request</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span><span class=nx>cachedResponse</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=nx>cachedResponse</span> <span class=o>||</span> <span class=nx>fetch</span><span class=p>(</span><span class=nx>event</span><span class=p>.</span><span class=nx>request</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span><span class=nx>networkResponse</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=c1>// 将网络请求的响应缓存起来
+</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=k>return</span> <span class=nx>caches</span><span class=p>.</span><span class=nx>open</span><span class=p>(</span><span class=nx>CACHE_NAME</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span><span class=nx>cache</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>cache</span><span class=p>.</span><span class=nx>put</span><span class=p>(</span><span class=nx>event</span><span class=p>.</span><span class=nx>request</span><span class=p>,</span> <span class=nx>networkResponse</span><span class=p>.</span><span class=nx>clone</span><span class=p>());</span>
+</span></span><span class=line><span class=cl>                    <span class=k>return</span> <span class=nx>networkResponse</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=p>});</span>
+</span></span><span class=line><span class=cl>            <span class=p>});</span>
+</span></span><span class=line><span class=cl>        <span class=p>})</span>
+</span></span><span class=line><span class=cl>    <span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=网络优先策略>网络优先策略</h3><p>如果需要优先从网络获取最新数据：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>self</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;fetch&#39;</span><span class=p>,</span> <span class=nx>event</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>event</span><span class=p>.</span><span class=nx>respondWith</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>        <span class=nx>fetch</span><span class=p>(</span><span class=nx>event</span><span class=p>.</span><span class=nx>request</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=p>.</span><span class=nx>then</span><span class=p>(</span><span class=nx>networkResponse</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=c1>// 将响应数据缓存起来
+</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=k>return</span> <span class=nx>caches</span><span class=p>.</span><span class=nx>open</span><span class=p>(</span><span class=nx>CACHE_NAME</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span><span class=nx>cache</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>cache</span><span class=p>.</span><span class=nx>put</span><span class=p>(</span><span class=nx>event</span><span class=p>.</span><span class=nx>request</span><span class=p>,</span> <span class=nx>networkResponse</span><span class=p>.</span><span class=nx>clone</span><span class=p>());</span>
+</span></span><span class=line><span class=cl>                    <span class=k>return</span> <span class=nx>networkResponse</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=p>});</span>
+</span></span><span class=line><span class=cl>            <span class=p>})</span>
+</span></span><span class=line><span class=cl>            <span class=p>.</span><span class=k>catch</span><span class=p>(()</span> <span class=p>=&gt;</span> <span class=nx>caches</span><span class=p>.</span><span class=nx>match</span><span class=p>(</span><span class=nx>event</span><span class=p>.</span><span class=nx>request</span><span class=p>))</span> <span class=c1>// 如果网络请求失败，则使用缓存
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=离线回退offline-fallback>离线回退（Offline Fallback）</h3><p>当网络和缓存都不可用时，返回一个备用的离线页面。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>self</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;fetch&#39;</span><span class=p>,</span> <span class=nx>event</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>event</span><span class=p>.</span><span class=nx>respondWith</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=nx>caches</span><span class=p>.</span><span class=nx>match</span><span class=p>(</span><span class=nx>event</span><span class=p>.</span><span class=nx>request</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span><span class=nx>response</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>return</span> <span class=nx>response</span> <span class=o>||</span> <span class=nx>fetch</span><span class=p>(</span><span class=nx>event</span><span class=p>.</span><span class=nx>request</span><span class=p>).</span><span class=k>catch</span><span class=p>(()</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nx>caches</span><span class=p>.</span><span class=nx>match</span><span class=p>(</span><span class=s1>&#39;/offline.html&#39;</span><span class=p>);</span> <span class=c1>// 返回离线页面
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=p>});</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=更新-service-worker>更新 Service Worker</h2><p>当你需要更新 Service Worker 的脚本时，浏览器会检测文件的变化，并进入新的安装阶段。
+为了让新版本立即生效，可以在 activate 事件中强制控制权交给新版本：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>self</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;activate&#39;</span><span class=p>,</span> <span class=nx>event</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>event</span><span class=p>.</span><span class=nx>waitUntil</span><span class=p>(</span><span class=nx>self</span><span class=p>.</span><span class=nx>clients</span><span class=p>.</span><span class=nx>claim</span><span class=p>());</span> <span class=c1>// 立即控制页面
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=调试与测试>调试与测试</h2><ol><li>检查 Service Worker 状态： 在浏览器的开发者工具中，进入 Application -> Service Workers 查看状态。</li><li>模拟离线模式： 在开发者工具中启用离线模式，测试应用是否能在离线状态下正常运行。</li><li>清理缓存： 使用 caches.delete() 手动清理旧缓存。</li></ol><h2 id=结合-push-api-实现推送通知>结合 Push API 实现推送通知</h2><p>Service Worker 的 push 事件和 Push API 是实现 Web 应用实时通知的核心技术。</p><p>当服务器向用户设备发送推送消息时，Service Worker 会监听到 push 事件。</p><h3 id=push-api-工作流程>Push API 工作流程</h3><p>1.订阅用户（订阅 Push Service）：用户同意接收推送通知后，浏览器通过 Push API 向 Push Service 注册订阅，发送一个包含订阅信息的对象，通常包括 endpoint（推送地址）和 public key（公钥）。</p><p>2.发送推送消息：服务器使用订阅对象中的 endpoint 和加密信息（使用 Web Push Protocol）发送消息。</p><p>3.接收推送消息：浏览器接收消息，并通过触发 Service Worker 的 push 事件将消息交给 Web 应用处理。</p><h3 id=实现步骤>实现步骤</h3><p>（1）客户端：订阅 Push Service</p><p>用户同意接收通知后，订阅 Push Service。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// 注册 Service Worker
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>navigator</span><span class=p>.</span><span class=nx>serviceWorker</span><span class=p>.</span><span class=nx>register</span><span class=p>(</span><span class=s1>&#39;/service-worker.js&#39;</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span><span class=nx>registration</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;Service Worker 注册成功:&#39;</span><span class=p>,</span> <span class=nx>registration</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=c1>// 请求用户授权推送通知
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=k>return</span> <span class=nx>Notification</span><span class=p>.</span><span class=nx>requestPermission</span><span class=p>().</span><span class=nx>then</span><span class=p>(</span><span class=nx>permission</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>permission</span> <span class=o>===</span> <span class=s1>&#39;granted&#39;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=c1>// 订阅 Push Service
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=k>return</span> <span class=nx>registration</span><span class=p>.</span><span class=nx>pushManager</span><span class=p>.</span><span class=nx>subscribe</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>        <span class=nx>userVisibleOnly</span><span class=o>:</span> <span class=kc>true</span><span class=p>,</span> <span class=c1>// 必须设置为 true
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nx>applicationServerKey</span><span class=o>:</span> <span class=nx>urlBase64ToUint8Array</span><span class=p>(</span><span class=s1>&#39;&lt;Your-VAPID-Public-Key&gt;&#39;</span><span class=p>)</span> <span class=c1>// 服务器公钥
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=p>});</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;通知权限未被授予&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>}).</span><span class=nx>then</span><span class=p>(</span><span class=nx>subscription</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;订阅成功:&#39;</span><span class=p>,</span> <span class=nx>JSON</span><span class=p>.</span><span class=nx>stringify</span><span class=p>(</span><span class=nx>subscription</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>  <span class=c1>// 将 subscription 发送到服务器
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>（2）服务器：发送推送消息</p><p>服务器使用 Web Push 库（如 web-push）发送消息。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=kr>const</span> <span class=nx>webPush</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;web-push&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// VAPID 密钥
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>vapidKeys</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>publicKey</span><span class=o>:</span> <span class=s1>&#39;&lt;Your-VAPID-Public-Key&gt;&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>privateKey</span><span class=o>:</span> <span class=s1>&#39;&lt;Your-VAPID-Private-Key&gt;&#39;</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>webPush</span><span class=p>.</span><span class=nx>setVapidDetails</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;mailto:example@yourdomain.com&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>vapidKeys</span><span class=p>.</span><span class=nx>publicKey</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>vapidKeys</span><span class=p>.</span><span class=nx>privateKey</span>
+</span></span><span class=line><span class=cl><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 推送订阅对象
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>subscription</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>endpoint</span><span class=o>:</span> <span class=s1>&#39;&lt;Browser-Endpoint&gt;&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>keys</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>p256dh</span><span class=o>:</span> <span class=s1>&#39;&lt;User-Public-Key&gt;&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>auth</span><span class=o>:</span> <span class=s1>&#39;&lt;User-Auth-Key&gt;&#39;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 发送推送消息
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>webPush</span><span class=p>.</span><span class=nx>sendNotification</span><span class=p>(</span><span class=nx>subscription</span><span class=p>,</span> <span class=nx>JSON</span><span class=p>.</span><span class=nx>stringify</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>  <span class=nx>title</span><span class=o>:</span> <span class=s1>&#39;实时通知&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>body</span><span class=o>:</span> <span class=s1>&#39;这是一条测试通知！&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>url</span><span class=o>:</span> <span class=s1>&#39;/some-url&#39;</span>
+</span></span><span class=line><span class=cl><span class=p>})).</span><span class=nx>then</span><span class=p>(</span><span class=nx>response</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;推送成功:&#39;</span><span class=p>,</span> <span class=nx>response</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}).</span><span class=k>catch</span><span class=p>(</span><span class=nx>error</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>error</span><span class=p>(</span><span class=s1>&#39;推送失败:&#39;</span><span class=p>,</span> <span class=nx>error</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>（3）Service Worker 处理 push 事件</p><p>在 Service Worker 中监听 push 事件，并显示通知。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>self</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;push&#39;</span><span class=p>,</span> <span class=nx>event</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;收到推送消息:&#39;</span><span class=p>,</span> <span class=nx>event</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kd>let</span> <span class=nx>data</span> <span class=o>=</span> <span class=p>{};</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>(</span><span class=nx>event</span><span class=p>.</span><span class=nx>data</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>data</span> <span class=o>=</span> <span class=nx>event</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>json</span><span class=p>();</span> <span class=c1>// 解析推送消息
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kr>const</span> <span class=nx>title</span> <span class=o>=</span> <span class=nx>data</span><span class=p>.</span><span class=nx>title</span> <span class=o>||</span> <span class=s1>&#39;默认标题&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=kr>const</span> <span class=nx>options</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>body</span><span class=o>:</span> <span class=nx>data</span><span class=p>.</span><span class=nx>body</span> <span class=o>||</span> <span class=s1>&#39;默认消息&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>icon</span><span class=o>:</span> <span class=s1>&#39;/icon.png&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>badge</span><span class=o>:</span> <span class=s1>&#39;/badge.png&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>data</span><span class=o>:</span> <span class=nx>data</span><span class=p>.</span><span class=nx>url</span> <span class=o>||</span> <span class=s1>&#39;/&#39;</span> <span class=c1>// 点击通知后跳转的 URL
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nx>event</span><span class=p>.</span><span class=nx>waitUntil</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=nx>self</span><span class=p>.</span><span class=nx>registration</span><span class=p>.</span><span class=nx>showNotification</span><span class=p>(</span><span class=nx>title</span><span class=p>,</span> <span class=nx>options</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>（4）notificationclick 事件：通知点击处理</p><p>监听通知的点击事件，控制点击行为（如跳转页面或执行操作）。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>self</span><span class=p>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=s1>&#39;notificationclick&#39;</span><span class=p>,</span> <span class=nx>event</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;通知被点击:&#39;</span><span class=p>,</span> <span class=nx>event</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kr>const</span> <span class=nx>url</span> <span class=o>=</span> <span class=nx>event</span><span class=p>.</span><span class=nx>notification</span><span class=p>.</span><span class=nx>data</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=nx>event</span><span class=p>.</span><span class=nx>notification</span><span class=p>.</span><span class=nx>close</span><span class=p>();</span> <span class=c1>// 关闭通知
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl>  <span class=c1>// 打开或跳转到指定页面
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nx>event</span><span class=p>.</span><span class=nx>waitUntil</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=nx>clients</span><span class=p>.</span><span class=nx>matchAll</span><span class=p>({</span> <span class=nx>type</span><span class=o>:</span> <span class=s1>&#39;window&#39;</span> <span class=p>}).</span><span class=nx>then</span><span class=p>(</span><span class=nx>clientList</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>for</span> <span class=p>(</span><span class=kr>const</span> <span class=nx>client</span> <span class=k>of</span> <span class=nx>clientList</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=nx>client</span><span class=p>.</span><span class=nx>url</span> <span class=o>===</span> <span class=nx>url</span> <span class=o>&amp;&amp;</span> <span class=s1>&#39;focus&#39;</span> <span class=k>in</span> <span class=nx>client</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=k>return</span> <span class=nx>client</span><span class=p>.</span><span class=nx>focus</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=k>if</span> <span class=p>(</span><span class=nx>clients</span><span class=p>.</span><span class=nx>openWindow</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nx>clients</span><span class=p>.</span><span class=nx>openWindow</span><span class=p>(</span><span class=nx>url</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=后台同步>后台同步</h2><p>通过 Background Sync API 实现可靠的后台任务。</p></section><footer class=article-footer><section class=article-tags><a href=/tags/javascript/>JavaScript</a>
+<a href=/tags/web-apis/>Web APIs</a></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>Related content</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/p/ecmascript-%E5%92%8C-javascript/><div class=article-details><h2 class=article-title>ECMAScript 和 JavaScript</h2></div></a></article><article><a href=/p/javascript-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/><div class=article-details><h2 class=article-title>JavaScript 内存管理</h2></div></a></article><article><a href=/p/javascript-%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B%E5%88%A4%E6%96%AD/><div class=article-details><h2 class=article-title>JavaScript 变量类型判断</h2></div></a></article><article><a href=/p/%E5%8F%98%E9%87%8F%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%8E%E4%BD%9C%E7%94%A8%E5%9F%9F/><div class=article-details><h2 class=article-title>变量、执行上下文与作用域</h2></div></a></article><article><a href=/p/%E9%98%B2%E6%8A%96%E5%92%8C%E8%8A%82%E6%B5%81/><div class=article-details><h2 class=article-title>防抖和节流</h2></div></a></article></div></div></aside><script src=//unpkg.com/@waline/client@v2/dist/waline.js></script><link href=//unpkg.com/@waline/client@v2/dist/waline.css rel=stylesheet><div id=waline class=waline-container></div><style>.waline-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding);--waline-font-size:var(--article-font-size)}.waline-container .wl-count{color:var(--card-text-color-main)}</style><script>Waline.init({avatar:"",dark:'html[data-scheme="dark"]',el:"#waline",emoji:["https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo"],lang:"",locale:{admin:"Admin",placeholder:null},placeholder:"",requiredMeta:["name","email","url"],serverURL:"my-waline-olive.vercel.app",visitor:""})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2025 DawnKylin</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.29.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>
